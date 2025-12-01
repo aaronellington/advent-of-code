@@ -21,7 +21,7 @@ func Part1(filePath string) (int, error) {
 			continue
 		}
 		direction := string(lineString[0])
-		number, err := strconv.Atoi(lineString[1:]) // Converts "123" to an integer
+		number, err := strconv.Atoi(lineString[1:])
 		if err != nil {
 			return 0, err
 		}
