@@ -1,0 +1,8 @@
+# System
+.DS_Store
+
+# Temporary Files
+/.config/tmp/
+
+# Go
+__debug_bin*
