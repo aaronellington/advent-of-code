@@ -7,11 +7,11 @@ import (
 	"github.com/aaronellington/advent-of-code/2025/day1"
 )
 
-func TestDay1_Part1_Example(t *testing.T) {
+func Test_Part1_Example(t *testing.T) {
 	tester(t, day1.Part1, "data/part1_example.txt", 3)
 }
 
-func TestDay1_Part1(t *testing.T) {
+func Test_Part1(t *testing.T) {
 	tester(t, day1.Part1, "data/part1.txt", 1074)
 }
 
