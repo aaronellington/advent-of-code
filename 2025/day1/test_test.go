@@ -15,6 +15,14 @@ func Test_Part1(t *testing.T) {
 	tester(t, day1.Part1, "data/part1.txt", 1074)
 }
 
+func Test_Part2_Example(t *testing.T) {
+	tester(t, day1.Part2, "data/part1_example.txt", 6)
+}
+
+func Test_Part2(t *testing.T) {
+	tester(t, day1.Part2, "data/part1.txt", 6254)
+}
+
 func tester(t *testing.T, v func(filePath string) (int, error), filePath string, expected int) {
 	answer, err := v(filePath)
 
