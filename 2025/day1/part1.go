@@ -2,35 +2,18 @@ package day1
 
 import (
 	"log"
-	"os"
-	"strconv"
-	"strings"
 )
 
 func Part1(filePath string) (int, error) {
 	timesAtPositionZero := 0
 	position := 50
 
-	fileBytes, err := os.ReadFile(filePath)
-	if err != nil {
-		return 0, err
-	}
-
-	for _, lineString := range strings.Split(string(fileBytes), "\n") {
-		if lineString == "" {
-			continue
-		}
-		direction := string(lineString[0])
-		number, err := strconv.Atoi(lineString[1:])
-		if err != nil {
-			return 0, err
-		}
-
+	LoopOverFile(filePath, func(direction string, amount int) {
 		switch direction {
 		case "R":
-			position += number
+			position += amount
 		case "L":
-			position -= number
+			position -= amount
 		default:
 			panic("wtf")
 		}
@@ -45,12 +28,13 @@ func Part1(filePath string) (int, error) {
 		}
 
 		log.Printf(
-			"The dial is rotated %s to point at %d; during this rotation, it points at 0 %d times",
-			lineString,
+			"The dial is rotated %s%d to point at %d; during this rotation, it points at 0 %d times",
+			direction,
+			amount,
 			position,
 			timesAtPositionZero,
 		)
-	}
+	})
 
 	return timesAtPositionZero, nil
 }
