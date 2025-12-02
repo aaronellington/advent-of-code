@@ -1,36 +1,40 @@
 package day1_test
 
 import (
-	"log"
 	"testing"
 
 	"github.com/aaronellington/advent-of-code/2025/day1"
+	"github.com/aaronellington/advent-of-code/internal/aoc"
 )
 
 func Test_Part1_Example(t *testing.T) {
-	tester(t, day1.Part1, "data/part1_example.txt", 3)
+	aoc.TestCase[int]{
+		FilePath: "data/part1_example.txt",
+		Expected: 3,
+		Func:     day1.Part1,
+	}.Test(t)
 }
 
 func Test_Part1(t *testing.T) {
-	tester(t, day1.Part1, "data/part1.txt", 1074)
+	aoc.TestCase[int]{
+		FilePath: "data/part1.txt",
+		Expected: 1074,
+		Func:     day1.Part1,
+	}.Test(t)
 }
 
 func Test_Part2_Example(t *testing.T) {
-	tester(t, day1.Part2, "data/part1_example.txt", 6)
+	aoc.TestCase[int]{
+		FilePath: "data/part1_example.txt",
+		Expected: 6,
+		Func:     day1.Part2,
+	}.Test(t)
 }
 
 func Test_Part2(t *testing.T) {
-	tester(t, day1.Part2, "data/part1.txt", 6254)
-}
-
-func tester(t *testing.T, v func(filePath string) (int, error), filePath string, expected int) {
-	answer, err := v(filePath)
-
-	if err != nil {
-		log.Fatal(err)
-	}
-
-	if answer != expected {
-		t.Fatalf("Answer was not %d, was %d", expected, answer)
-	}
+	aoc.TestCase[int]{
+		FilePath: "data/part1.txt",
+		Expected: 6254,
+		Func:     day1.Part2,
+	}.Test(t)
 }
