@@ -25,7 +25,7 @@ func Part2(fileName string) (int, error) {
 
 	LoopOverFile(fileName, func(start int, end int) {
 		for i := start; i <= end; i++ {
-			if isValidID(s) {
+			if isValidID(i) {
 				continue
 			}
 
