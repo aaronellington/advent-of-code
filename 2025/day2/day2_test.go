@@ -22,3 +22,19 @@ func Test_Part1(t *testing.T) {
 		Func:     day2.Part1,
 	}.Test(t)
 }
+
+func Test_Part2_Example(t *testing.T) {
+	aoc.TestCase[int]{
+		FilePath: "data/part1_example.txt",
+		Expected: 4174379265,
+		Func:     day2.Part2,
+	}.Test(t)
+}
+
+func Test_Part2(t *testing.T) {
+	aoc.TestCase[int]{
+		FilePath: "data/part1.txt",
+		Expected: 38731915928,
+		Func:     day2.Part2,
+	}.Test(t)
+}
