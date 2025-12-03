@@ -4,7 +4,7 @@ import (
 	"os"
 )
 
-func ReadFile(filePath string) string {
+func readFile(filePath string) string {
 	fileBytes, err := os.ReadFile(filePath)
 	PanicOnErr(err)
 

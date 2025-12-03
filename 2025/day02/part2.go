@@ -2,12 +2,15 @@ package day02
 
 import (
 	"fmt"
+	"strconv"
 	"strings"
+
+	"github.com/aaronellington/advent-of-code/internal/aoc"
 )
 
-func Part2(fileName string) (int, error) {
-	invalidIdentifierSum := 0
+type Part2 struct{}
 
+func (s Part2) SolveLine(line string) int {
 	isValidID := func(id int) bool {
 		s := fmt.Sprintf("%d", id)
 
@@ -23,15 +26,25 @@ func Part2(fileName string) (int, error) {
 		return true
 	}
 
-	LoopOverFile(fileName, func(start int, end int) {
-		for i := start; i <= end; i++ {
-			if isValidID(i) {
-				continue
-			}
+	parts := []int{}
+	for _, s := range strings.Split(line, "-") {
+		n, err := strconv.Atoi(s)
+		aoc.PanicOnErr(err)
 
-			invalidIdentifierSum += i
+		parts = append(parts, n)
+	}
+
+	start := parts[0]
+	end := parts[1]
+
+	invalidIdentifierSum := 0
+	for i := start; i <= end; i++ {
+		if isValidID(i) {
+			continue
 		}
-	})
 
-	return invalidIdentifierSum, nil
+		invalidIdentifierSum += i
+	}
+
+	return invalidIdentifierSum
 }

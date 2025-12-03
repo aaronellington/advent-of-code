@@ -2,37 +2,46 @@ package day01
 
 import (
 	"log"
+	"strconv"
+
+	"github.com/aaronellington/advent-of-code/internal/aoc"
 )
 
-func Part1(filePath string) (int, error) {
+type Part1 struct {
+	Position int
+}
+
+func (s *Part1) SolveLine(line string) int {
 	timesAtPositionZero := 0
-	position := 50
 
-	LoopOverFile(filePath, func(direction string, amount int) {
-		switch direction {
-		case "R":
-			position += amount
-		case "L":
-			position -= amount
-		}
+	direction := string(line[0])
 
-		position = position % 100
-		if position < 0 {
-			position = 100 - position*-1
-		}
+	amount, err := strconv.Atoi(line[1:])
+	aoc.PanicOnErr(err)
 
-		if position == 0 {
-			timesAtPositionZero++
-		}
+	switch direction {
+	case "R":
+		s.Position += amount
+	case "L":
+		s.Position -= amount
+	}
 
-		log.Printf(
-			"The dial is rotated %s%d to point at %d; during this rotation, it points at 0 %d times",
-			direction,
-			amount,
-			position,
-			timesAtPositionZero,
-		)
-	})
+	s.Position = s.Position % 100
+	if s.Position < 0 {
+		s.Position = 100 - s.Position*-1
+	}
 
-	return timesAtPositionZero, nil
+	if s.Position == 0 {
+		timesAtPositionZero++
+	}
+
+	log.Printf(
+		"The dial is rotated %s%d to point at %d; during this rotation, it points at 0 %d times",
+		direction,
+		amount,
+		s.Position,
+		timesAtPositionZero,
+	)
+
+	return timesAtPositionZero
 }

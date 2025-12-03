@@ -7,34 +7,28 @@ import (
 	"github.com/aaronellington/advent-of-code/internal/aoc"
 )
 
+func testSuite() aoc.TestSuite {
+	return aoc.TestSuite{
+		SolutionPart1: day02.Part1{},
+		SolutionPart2: day02.Part2{},
+		Part1Example:  1227775554,
+		Part1:         21139440284,
+		Part2Example:  4174379265,
+		Part2:         38731915928,
+	}
+}
 func Test_Part1_Example(t *testing.T) {
-	aoc.TestCase[int]{
-		FilePath: "data/part1_example.txt",
-		Expected: 1227775554,
-		Func:     day02.Part1,
-	}.Test(t)
+	testSuite().TestPart1Example(t)
 }
 
 func Test_Part1(t *testing.T) {
-	aoc.TestCase[int]{
-		FilePath: "data/part1.txt",
-		Expected: 21139440284,
-		Func:     day02.Part1,
-	}.Test(t)
+	testSuite().TestPart1(t)
 }
 
 func Test_Part2_Example(t *testing.T) {
-	aoc.TestCase[int]{
-		FilePath: "data/part1_example.txt",
-		Expected: 4174379265,
-		Func:     day02.Part2,
-	}.Test(t)
+	testSuite().TestPart2Example(t)
 }
 
 func Test_Part2(t *testing.T) {
-	aoc.TestCase[int]{
-		FilePath: "data/part1.txt",
-		Expected: 38731915928,
-		Func:     day02.Part2,
-	}.Test(t)
+	testSuite().TestPart2(t)
 }

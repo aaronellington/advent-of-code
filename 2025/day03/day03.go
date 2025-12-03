@@ -2,32 +2,26 @@ package day03
 
 import (
 	"fmt"
+	"log"
 	"strconv"
-	"strings"
 
 	"github.com/aaronellington/advent-of-code/internal/aoc"
 )
 
-func LoopOverFile(filePath string, v func(bank string)) {
-	for _, entry := range strings.Split(aoc.ReadFile(filePath), "\n") {
-		if entry == "" {
-			continue
-		}
-
-		v(entry)
-	}
+type Solution struct {
+	TargetBatteryCount int
 }
 
-func CalculateVoltage(bankString string, targetCount int) int {
-	bank := []int{}
+func (s Solution) SolveLine(line string) int {
 	// Convert the string to an array of numbers
-	for _, s := range bankString {
+	bank := []int{}
+	for _, s := range line {
 		n, err := strconv.Atoi(string(s))
 		aoc.PanicOnErr(err)
 		bank = append(bank, n)
 	}
 
-	answers := fillNumbers(targetCount, 0)
+	answers := fillNumbers(s.TargetBatteryCount, 0)
 
 	for bankIndex, bankNumber := range bank {
 		for answerIndexIndex, answerIndex := range answers {
@@ -38,7 +32,7 @@ func CalculateVoltage(bankString string, targetCount int) int {
 
 			// Move on if we we can't select this bank for this answer location because
 			// we wouldn't have enough remaining options to fill out the rest of the selection
-			enoughNumbersLeft := len(bank)-bankIndex >= targetCount-answerIndexIndex
+			enoughNumbersLeft := len(bank)-bankIndex >= s.TargetBatteryCount-answerIndexIndex
 			if !enoughNumbersLeft {
 				continue
 			}
@@ -50,7 +44,7 @@ func CalculateVoltage(bankString string, targetCount int) int {
 
 			// Select this location and auto fill the rest of the array
 			x := answers[0:answerIndexIndex]
-			y := fillNumbers(targetCount-answerIndexIndex, bankIndex)
+			y := fillNumbers(s.TargetBatteryCount-answerIndexIndex, bankIndex)
 			answers = append(x, y...)
 		}
 	}
@@ -63,8 +57,9 @@ func CalculateVoltage(bankString string, targetCount int) int {
 	bankVoltage, err := strconv.Atoi(bankVoltageString)
 	aoc.PanicOnErr(err)
 
-	return bankVoltage
+	log.Printf("Bank %s = %d", line, bankVoltage)
 
+	return bankVoltage
 }
 
 func fillNumbers(n int, startingPoint int) []int {
