@@ -20,8 +20,6 @@ func Part2(filePath string) (int, error) {
 			if originalPosition > 0 && position < 1 {
 				timesAtPositionZero++
 			}
-		default:
-			panic("wtf")
 		}
 
 		// Calculate the rotations

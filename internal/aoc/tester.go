@@ -1,7 +1,6 @@
 package aoc
 
 import (
-	"log"
 	"testing"
 )
 
@@ -13,9 +12,7 @@ type TestCase[T comparable] struct {
 
 func (testCase TestCase[T]) Test(t *testing.T) {
 	answer, err := testCase.Func(testCase.FilePath)
-	if err != nil {
-		log.Fatal(err)
-	}
+	PanicOnErr(err)
 
 	if answer != testCase.Expected {
 		t.Fatalf(

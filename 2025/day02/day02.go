@@ -13,16 +13,10 @@ func LoopOverFile(filePath string, v func(start int, end int)) {
 	}
 
 	for _, entry := range strings.FieldsFunc(aoc.ReadFile(filePath), Split) {
-		if entry == "" {
-			continue
-		}
-
 		parts := []int{}
 		for _, s := range strings.Split(entry, "-") {
 			n, err := strconv.Atoi(s)
-			if err != nil {
-				panic(err)
-			}
+			aoc.PanicOnErr(err)
 
 			parts = append(parts, n)
 		}

@@ -18,9 +18,7 @@ func LoopOverFile(filePath string, v func(direction string, amount int)) {
 		direction := string(lineString[0])
 
 		amount, err := strconv.Atoi(lineString[1:])
-		if err != nil {
-			panic(err)
-		}
+		aoc.PanicOnErr(err)
 
 		v(direction, amount)
 	}

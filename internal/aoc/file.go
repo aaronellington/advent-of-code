@@ -1,12 +1,12 @@
 package aoc
 
-import "os"
+import (
+	"os"
+)
 
 func ReadFile(filePath string) string {
 	fileBytes, err := os.ReadFile(filePath)
-	if err != nil {
-		panic(err)
-	}
+	PanicOnErr(err)
 
 	return string(fileBytes)
 }

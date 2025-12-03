@@ -14,8 +14,6 @@ func Part1(filePath string) (int, error) {
 			position += amount
 		case "L":
 			position -= amount
-		default:
-			panic("wtf")
 		}
 
 		position = position % 100
