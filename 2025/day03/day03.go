@@ -14,17 +14,13 @@ type Solution struct {
 
 func (s Solution) SolveLine(line string) int {
 	// Convert the string to an array of numbers
-	bank := []int{}
-	for _, s := range line {
-		n, err := strconv.Atoi(string(s))
-		aoc.PanicOnErr(err)
-		bank = append(bank, n)
-	}
+	bank := parseBank(line)
 
-	answers := fillNumbers(s.TargetBatteryCount, 0)
+	// Default to selecting the first X number of indexes
+	selectedIndexes := fillNumbers(s.TargetBatteryCount, 0)
 
 	for bankIndex, bankNumber := range bank {
-		for answerIndexIndex, answerIndex := range answers {
+		for answerIndexIndex, answerIndex := range selectedIndexes {
 			// If the answer index is already past this point, move on
 			if bankIndex <= answerIndex {
 				continue
@@ -42,21 +38,12 @@ func (s Solution) SolveLine(line string) int {
 				continue
 			}
 
-			// Select this location and auto fill the rest of the array
-			x := answers[0:answerIndexIndex]
-			y := fillNumbers(s.TargetBatteryCount-answerIndexIndex, bankIndex)
-			answers = append(x, y...)
+			// Select this location and auto fill the rest of the sequential indexes
+			selectedIndexes = append(selectedIndexes[0:answerIndexIndex], fillNumbers(s.TargetBatteryCount-answerIndexIndex, bankIndex)...)
 		}
 	}
 
-	bankVoltageString := ""
-	for _, index := range answers {
-		bankVoltageString += fmt.Sprintf("%d", bank[index])
-	}
-
-	bankVoltage, err := strconv.Atoi(bankVoltageString)
-	aoc.PanicOnErr(err)
-
+	bankVoltage := toVoltage(bank, selectedIndexes)
 	log.Printf("Bank %s = %d", line, bankVoltage)
 
 	return bankVoltage
@@ -69,4 +56,27 @@ func fillNumbers(n int, startingPoint int) []int {
 	}
 
 	return numbers
+}
+
+func parseBank(line string) []int {
+	bank := []int{}
+	for _, s := range line {
+		n, err := strconv.Atoi(string(s))
+		aoc.PanicOnErr(err)
+		bank = append(bank, n)
+	}
+
+	return bank
+}
+
+func toVoltage(bank []int, answer []int) int {
+	bankVoltageString := ""
+	for _, index := range answer {
+		bankVoltageString += fmt.Sprintf("%d", bank[index])
+	}
+
+	bankVoltage, err := strconv.Atoi(bankVoltageString)
+	aoc.PanicOnErr(err)
+
+	return bankVoltage
 }
