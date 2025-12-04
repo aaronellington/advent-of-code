@@ -5,7 +5,7 @@ import (
 )
 
 type Solution interface {
-	SolveLine(line string, lines []string) int
+	SolveLine(lineIndex int, lines []string) int
 }
 
 func Solve(solution Solution, filePath string) int {
@@ -16,8 +16,8 @@ func Solve(solution Solution, filePath string) int {
 	}
 
 	lines := strings.FieldsFunc(readFile(filePath), split)
-	for _, line := range strings.FieldsFunc(readFile(filePath), split) {
-		answer += solution.SolveLine(line, lines)
+	for lineIndex := range strings.FieldsFunc(readFile(filePath), split) {
+		answer += solution.SolveLine(lineIndex, lines)
 	}
 
 	return answer

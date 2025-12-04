@@ -12,7 +12,8 @@ type Part2 struct {
 	Position int
 }
 
-func (s *Part2) SolveLine(line string, lines []string) int {
+func (s *Part2) SolveLine(lineIndex int, lines []string) int {
+	line := lines[lineIndex]
 	timesAtPositionZero := 0
 
 	direction := string(line[0])

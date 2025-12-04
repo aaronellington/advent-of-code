@@ -12,7 +12,9 @@ type Solution struct {
 	TargetBatteryCount int
 }
 
-func (s Solution) SolveLine(line string, lines []string) int {
+func (s Solution) SolveLine(lineIndex int, lines []string) int {
+	line := lines[lineIndex]
+
 	// Convert the string to an array of numbers
 	bank := parseBank(line)
 
