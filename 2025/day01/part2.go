@@ -12,9 +12,7 @@ type Part2 struct {
 	Position int
 }
 
-func (s Part2) SolveFile() aoc.FileSolver {
-	return nil
-}
+func (s Part2) SolveFile() aoc.FileSolver { return nil }
 
 func (s *Part2) SolveLine() aoc.LineSolver {
 	return func(lineIndex int, lines []string) int {

@@ -12,9 +12,7 @@ type Solution struct {
 	TargetBatteryCount int
 }
 
-func (s Solution) SolveFile() aoc.FileSolver {
-	return nil
-}
+func (s Solution) SolveFile() aoc.FileSolver { return nil }
 
 func (s Solution) SolveLine() aoc.LineSolver {
 	return func(lineIndex int, lines []string) int {

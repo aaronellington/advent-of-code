@@ -6,6 +6,8 @@ import (
 
 type Part2 struct{}
 
+func (s Part2) SolveLine() aoc.LineSolver { return nil }
+
 func (s Part2) SolveFile() aoc.FileSolver {
 	return func(lines []string) int {
 		retrievedRollCount := 0
@@ -25,8 +27,4 @@ func (s Part2) SolveFile() aoc.FileSolver {
 
 		return retrievedRollCount
 	}
-}
-
-func (s Part2) SolveLine() aoc.LineSolver {
-	return nil
 }

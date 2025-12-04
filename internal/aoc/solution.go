@@ -20,10 +20,11 @@ func Solve(solution Solution, filePath string) int {
 	}
 
 	lines := strings.FieldsFunc(readFile(filePath), split)
-
-	if fileSolver := solution.SolveFile(); fileSolver != nil {
+	fileSolver := solution.SolveFile()
+	lineSolver := solution.SolveLine()
+	if fileSolver != nil {
 		return fileSolver(lines)
-	} else if lineSolver := solution.SolveLine(); lineSolver != nil {
+	} else if lineSolver != nil {
 		for lineIndex := range strings.FieldsFunc(readFile(filePath), split) {
 			answer += lineSolver(lineIndex, lines)
 		}
