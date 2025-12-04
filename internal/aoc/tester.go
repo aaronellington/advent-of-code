@@ -48,7 +48,7 @@ type LineTest struct {
 }
 
 func (lineTest LineTest) Test(t *testing.T) {
-	actual := lineTest.Solution.SolveLine(lineTest.Line)
+	actual := lineTest.Solution.SolveLine(lineTest.Line, []string{lineTest.Line})
 	if actual != lineTest.Expected {
 		t.Fatalf(
 			"Got %v, expected %v",

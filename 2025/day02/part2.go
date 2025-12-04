@@ -10,7 +10,7 @@ import (
 
 type Part2 struct{}
 
-func (s Part2) SolveLine(line string) int {
+func (s Part2) SolveLine(line string, lines []string) int {
 	isValidID := func(id int) bool {
 		s := fmt.Sprintf("%d", id)
 

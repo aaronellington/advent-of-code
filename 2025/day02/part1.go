@@ -10,7 +10,7 @@ import (
 
 type Part1 struct{}
 
-func (s Part1) SolveLine(line string) int {
+func (s Part1) SolveLine(line string, lines []string) int {
 	parts := []int{}
 	for _, s := range strings.Split(line, "-") {
 		n, err := strconv.Atoi(s)
