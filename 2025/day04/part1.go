@@ -3,63 +3,73 @@ package day04
 import (
 	"log"
 	"strings"
+
+	"github.com/aaronellington/advent-of-code/internal/aoc"
 )
 
 type Part1 struct{}
 
-func (s Part1) SolveLine(rowIndex int, lines []string) int {
-	accessibleRolls := 0
-	maxRolls := 4
+func (s Part1) SolveFile() aoc.FileSolver {
+	return func(lines []string) int {
+		accessibleRolls := 0
+		maxRolls := 4
+		grid := buildGrid(lines)
 
-	outputLine := strings.Split(lines[rowIndex], "")
+		for rowIndex, row := range lines {
+			outputLine := strings.Split(row, "")
 
-	grid := buildGrid(lines)
-	line := lines[rowIndex]
-	for columnIndex, v := range line {
-		// Skip if not a roll
-		if v != '@' {
-			continue
-		}
+			line := lines[rowIndex]
+			for columnIndex, v := range line {
+				// Skip if not a roll
+				if v != '@' {
+					continue
+				}
 
-		toCheck := []Vector{
-			// Up
-			{X: columnIndex, Y: rowIndex - 1},
-			// Down
-			{X: columnIndex, Y: rowIndex + 1},
-			// Left
-			{X: columnIndex - 1, Y: rowIndex},
-			// Right
-			{X: columnIndex + 1, Y: rowIndex},
-			// Top Right
-			{X: columnIndex + 1, Y: rowIndex - 1},
-			// Top Left
-			{X: columnIndex - 1, Y: rowIndex - 1},
-			// bottom Right
-			{X: columnIndex + 1, Y: rowIndex + 1},
-			// bottom Left
-			{X: columnIndex - 1, Y: rowIndex + 1},
-		}
+				toCheck := []Vector{
+					// Up
+					{X: columnIndex, Y: rowIndex - 1},
+					// Down
+					{X: columnIndex, Y: rowIndex + 1},
+					// Left
+					{X: columnIndex - 1, Y: rowIndex},
+					// Right
+					{X: columnIndex + 1, Y: rowIndex},
+					// Top Right
+					{X: columnIndex + 1, Y: rowIndex - 1},
+					// Top Left
+					{X: columnIndex - 1, Y: rowIndex - 1},
+					// bottom Right
+					{X: columnIndex + 1, Y: rowIndex + 1},
+					// bottom Left
+					{X: columnIndex - 1, Y: rowIndex + 1},
+				}
 
-		// Check adjacent rolls
-		adjacentRolls := 0
-		for _, v := range toCheck {
-			if grid[v] {
-				outputLine[columnIndex] = "X"
-				adjacentRolls++
+				// Check adjacent rolls
+				adjacentRolls := 0
+				for _, v := range toCheck {
+					if grid[v] {
+						outputLine[columnIndex] = "X"
+						adjacentRolls++
+					}
+				}
+
+				// Skip if too many adjacent rolls
+				if adjacentRolls >= maxRolls {
+					continue
+				}
+
+				accessibleRolls++
 			}
+
+			log.Println(strings.Join(outputLine, ""))
 		}
 
-		// Skip if too many adjacent rolls
-		if adjacentRolls >= maxRolls {
-			continue
-		}
-
-		accessibleRolls++
+		return accessibleRolls
 	}
+}
 
-	log.Println(strings.Join(outputLine, ""))
-
-	return accessibleRolls
+func (s Part1) SolveLine() aoc.LineSolver {
+	return nil
 }
 
 type Vector struct {

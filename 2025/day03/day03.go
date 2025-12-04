@@ -12,43 +12,49 @@ type Solution struct {
 	TargetBatteryCount int
 }
 
-func (s Solution) SolveLine(lineIndex int, lines []string) int {
-	line := lines[lineIndex]
+func (s Solution) SolveFile() aoc.FileSolver {
+	return nil
+}
 
-	// Convert the string to an array of numbers
-	bank := parseBank(line)
+func (s Solution) SolveLine() aoc.LineSolver {
+	return func(lineIndex int, lines []string) int {
+		line := lines[lineIndex]
 
-	// Default to selecting the first X number of indexes
-	selectedIndexes := fillNumbers(s.TargetBatteryCount, 0)
+		// Convert the string to an array of numbers
+		bank := parseBank(line)
 
-	for bankIndex, bankNumber := range bank {
-		for answerIndexIndex, answerIndex := range selectedIndexes {
-			// If the answer index is already past this point, move on
-			if bankIndex <= answerIndex {
-				continue
+		// Default to selecting the first X number of indexes
+		selectedIndexes := fillNumbers(s.TargetBatteryCount, 0)
+
+		for bankIndex, bankNumber := range bank {
+			for answerIndexIndex, answerIndex := range selectedIndexes {
+				// If the answer index is already past this point, move on
+				if bankIndex <= answerIndex {
+					continue
+				}
+
+				// Move on if we we can't select this bank for this answer location because
+				// we wouldn't have enough remaining options to fill out the rest of the selection
+				enoughNumbersLeft := len(bank)-bankIndex >= s.TargetBatteryCount-answerIndexIndex
+				if !enoughNumbersLeft {
+					continue
+				}
+
+				// If the number is smaller than the current bank number, move on
+				if bankNumber <= bank[answerIndex] {
+					continue
+				}
+
+				// Select this location and auto fill the rest of the sequential indexes
+				selectedIndexes = append(selectedIndexes[0:answerIndexIndex], fillNumbers(s.TargetBatteryCount-answerIndexIndex, bankIndex)...)
 			}
-
-			// Move on if we we can't select this bank for this answer location because
-			// we wouldn't have enough remaining options to fill out the rest of the selection
-			enoughNumbersLeft := len(bank)-bankIndex >= s.TargetBatteryCount-answerIndexIndex
-			if !enoughNumbersLeft {
-				continue
-			}
-
-			// If the number is smaller than the current bank number, move on
-			if bankNumber <= bank[answerIndex] {
-				continue
-			}
-
-			// Select this location and auto fill the rest of the sequential indexes
-			selectedIndexes = append(selectedIndexes[0:answerIndexIndex], fillNumbers(s.TargetBatteryCount-answerIndexIndex, bankIndex)...)
 		}
+
+		bankVoltage := toVoltage(bank, selectedIndexes)
+		log.Printf("Bank %s = %d", line, bankVoltage)
+
+		return bankVoltage
 	}
-
-	bankVoltage := toVoltage(bank, selectedIndexes)
-	log.Printf("Bank %s = %d", line, bankVoltage)
-
-	return bankVoltage
 }
 
 func fillNumbers(n int, startingPoint int) []int {

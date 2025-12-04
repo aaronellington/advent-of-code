@@ -10,38 +10,44 @@ import (
 
 type Part1 struct{}
 
-func (s Part1) SolveLine(lineIndex int, lines []string) int {
-	line := lines[lineIndex]
-	parts := []int{}
-	for _, s := range strings.Split(line, "-") {
-		n, err := strconv.Atoi(s)
-		aoc.PanicOnErr(err)
+func (s Part1) SolveFile() aoc.FileSolver {
+	return nil
+}
 
-		parts = append(parts, n)
-	}
+func (s Part1) SolveLine() aoc.LineSolver {
+	return func(lineIndex int, lines []string) int {
+		line := lines[lineIndex]
+		parts := []int{}
+		for _, s := range strings.Split(line, "-") {
+			n, err := strconv.Atoi(s)
+			aoc.PanicOnErr(err)
 
-	start := parts[0]
-	end := parts[1]
-
-	invalidIdentifierSum := 0
-	for i := start; i <= end; i++ {
-		s := fmt.Sprintf("%d", i)
-
-		// Skip odd length numbers
-		if len(s)%2 != 0 {
-			continue
+			parts = append(parts, n)
 		}
 
-		middle := len(s) / 2
-		firstHalf := s[:middle]
-		secondHalf := s[middle:]
+		start := parts[0]
+		end := parts[1]
 
-		if firstHalf != secondHalf {
-			continue
+		invalidIdentifierSum := 0
+		for i := start; i <= end; i++ {
+			s := fmt.Sprintf("%d", i)
+
+			// Skip odd length numbers
+			if len(s)%2 != 0 {
+				continue
+			}
+
+			middle := len(s) / 2
+			firstHalf := s[:middle]
+			secondHalf := s[middle:]
+
+			if firstHalf != secondHalf {
+				continue
+			}
+
+			invalidIdentifierSum += i
 		}
 
-		invalidIdentifierSum += i
+		return invalidIdentifierSum
 	}
-
-	return invalidIdentifierSum
 }
