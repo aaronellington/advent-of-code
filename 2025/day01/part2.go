@@ -8,50 +8,44 @@ import (
 	"github.com/aaronellington/advent-of-code/internal/aoc"
 )
 
-type Part2 struct {
-	Position int
-}
+func Part2(lines []string) int {
+	position := 50
+	timesAtPositionZero := 0
 
-func (s Part2) SolveFile() aoc.FileSolver { return nil }
-
-func (s *Part2) SolveLine() aoc.LineSolver {
-	return func(lineIndex int, lines []string) int {
-		line := lines[lineIndex]
-		timesAtPositionZero := 0
-
+	for _, line := range lines {
 		direction := string(line[0])
 
 		amount, err := strconv.Atoi(line[1:])
 		aoc.PanicOnErr(err)
 
-		originalPosition := s.Position
+		originalPosition := position
 		switch direction {
 		case "R":
-			s.Position += amount
+			position += amount
 		case "L":
-			s.Position -= amount
+			position -= amount
 			// Going negative should trigger, but only if moving past 0
-			if originalPosition > 0 && s.Position < 1 {
+			if originalPosition > 0 && position < 1 {
 				timesAtPositionZero++
 			}
 		}
 
 		// Calculate the rotations
-		timesAtPositionZero += int(math.Floor(math.Abs(float64(s.Position) / 100)))
+		timesAtPositionZero += int(math.Floor(math.Abs(float64(position) / 100)))
 
-		s.Position = s.Position % 100
-		if s.Position < 0 {
-			s.Position = 100 - s.Position*-1
+		position = position % 100
+		if position < 0 {
+			position = 100 - position*-1
 		}
 
 		log.Printf(
 			"The dial is rotated %s%d to point at %d; during this rotation, it points at 0 %d times",
 			direction,
 			amount,
-			s.Position,
+			position,
 			timesAtPositionZero,
 		)
-
-		return timesAtPositionZero
 	}
+
+	return timesAtPositionZero
 }

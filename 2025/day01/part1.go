@@ -7,17 +7,11 @@ import (
 	"github.com/aaronellington/advent-of-code/internal/aoc"
 )
 
-type Part1 struct {
-	Position int
-}
+func Part1(lines []string) int {
+	position := 50
+	timesAtPositionZero := 0
 
-func (s *Part1) SolveFile() aoc.FileSolver { return nil }
-
-func (s *Part1) SolveLine() aoc.LineSolver {
-	return func(lineIndex int, lines []string) int {
-		line := lines[lineIndex]
-		timesAtPositionZero := 0
-
+	for _, line := range lines {
 		direction := string(line[0])
 
 		amount, err := strconv.Atoi(line[1:])
@@ -25,17 +19,17 @@ func (s *Part1) SolveLine() aoc.LineSolver {
 
 		switch direction {
 		case "R":
-			s.Position += amount
+			position += amount
 		case "L":
-			s.Position -= amount
+			position -= amount
 		}
 
-		s.Position = s.Position % 100
-		if s.Position < 0 {
-			s.Position = 100 - s.Position*-1
+		position = position % 100
+		if position < 0 {
+			position = 100 - position*-1
 		}
 
-		if s.Position == 0 {
+		if position == 0 {
 			timesAtPositionZero++
 		}
 
@@ -43,10 +37,10 @@ func (s *Part1) SolveLine() aoc.LineSolver {
 			"The dial is rotated %s%d to point at %d; during this rotation, it points at 0 %d times",
 			direction,
 			amount,
-			s.Position,
+			position,
 			timesAtPositionZero,
 		)
-
-		return timesAtPositionZero
 	}
+
+	return timesAtPositionZero
 }

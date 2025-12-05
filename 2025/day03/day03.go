@@ -12,11 +12,9 @@ type Solution struct {
 	TargetBatteryCount int
 }
 
-func (s Solution) SolveFile() aoc.FileSolver { return nil }
-
-func (s Solution) SolveLine() aoc.LineSolver {
-	return func(lineIndex int, lines []string) int {
-		line := lines[lineIndex]
+func (s Solution) Solve(lines []string) int {
+	totalVoltage := 0
+	for _, line := range lines {
 
 		// Convert the string to an array of numbers
 		bank := parseBank(line)
@@ -50,9 +48,11 @@ func (s Solution) SolveLine() aoc.LineSolver {
 
 		bankVoltage := toVoltage(bank, selectedIndexes)
 		log.Printf("Bank %s = %d", line, bankVoltage)
-
-		return bankVoltage
+		totalVoltage += bankVoltage
 	}
+
+	return totalVoltage
+
 }
 
 func fillNumbers(n int, startingPoint int) []int {

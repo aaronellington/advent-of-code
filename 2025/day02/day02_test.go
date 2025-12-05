@@ -9,12 +9,16 @@ import (
 
 func testSuite() aoc.TestSuite {
 	return aoc.TestSuite{
-		SolutionPart1: day02.Part1{},
-		SolutionPart2: day02.Part2{},
-		Part1Example:  1227775554,
-		Part1:         21139440284,
-		Part2Example:  4174379265,
-		Part2:         38731915928,
+		Part1: aoc.Part{
+			Solution: day02.Part1,
+			Example:  1227775554,
+			Answer:   21139440284,
+		},
+		Part2: aoc.Part{
+			Solution: day02.Part2,
+			Example:  4174379265,
+			Answer:   38731915928,
+		},
 	}
 }
 func Test_Part1_Example(t *testing.T) {

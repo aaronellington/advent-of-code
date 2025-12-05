@@ -8,27 +8,25 @@ import (
 	"github.com/aaronellington/advent-of-code/internal/aoc"
 )
 
-type Part2 struct{}
+func Part2(lines []string) int {
+	invalidIdentifierSum := 0
 
-func (s Part2) SolveFile() aoc.FileSolver { return nil }
+	isValidID := func(id int) bool {
+		s := fmt.Sprintf("%d", id)
 
-func (s Part2) SolveLine() aoc.LineSolver {
-	return func(lineIndex int, lines []string) int {
-		line := lines[lineIndex]
-		isValidID := func(id int) bool {
-			s := fmt.Sprintf("%d", id)
-
-			middle := len(s) / 2
-			for charsToCheck := 1; charsToCheck <= middle; charsToCheck++ {
-				part := s[0:charsToCheck]
-				targetString := strings.Repeat(part, len(s)/charsToCheck)
-				if targetString == s {
-					return false
-				}
+		middle := len(s) / 2
+		for charsToCheck := 1; charsToCheck <= middle; charsToCheck++ {
+			part := s[0:charsToCheck]
+			targetString := strings.Repeat(part, len(s)/charsToCheck)
+			if targetString == s {
+				return false
 			}
-
-			return true
 		}
+
+		return true
+	}
+
+	for _, line := range lines {
 
 		parts := []int{}
 		for _, s := range strings.Split(line, "-") {
@@ -41,7 +39,6 @@ func (s Part2) SolveLine() aoc.LineSolver {
 		start := parts[0]
 		end := parts[1]
 
-		invalidIdentifierSum := 0
 		for i := start; i <= end; i++ {
 			if isValidID(i) {
 				continue
@@ -49,7 +46,7 @@ func (s Part2) SolveLine() aoc.LineSolver {
 
 			invalidIdentifierSum += i
 		}
-
-		return invalidIdentifierSum
 	}
+
+	return invalidIdentifierSum
 }

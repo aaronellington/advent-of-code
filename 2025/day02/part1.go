@@ -8,13 +8,10 @@ import (
 	"github.com/aaronellington/advent-of-code/internal/aoc"
 )
 
-type Part1 struct{}
+func Part1(lines []string) int {
+	invalidIdentifierSum := 0
 
-func (s Part1) SolveFile() aoc.FileSolver { return nil }
-
-func (s Part1) SolveLine() aoc.LineSolver {
-	return func(lineIndex int, lines []string) int {
-		line := lines[lineIndex]
+	for _, line := range lines {
 		parts := []int{}
 		for _, s := range strings.Split(line, "-") {
 			n, err := strconv.Atoi(s)
@@ -26,7 +23,6 @@ func (s Part1) SolveLine() aoc.LineSolver {
 		start := parts[0]
 		end := parts[1]
 
-		invalidIdentifierSum := 0
 		for i := start; i <= end; i++ {
 			s := fmt.Sprintf("%d", i)
 
@@ -46,6 +42,7 @@ func (s Part1) SolveLine() aoc.LineSolver {
 			invalidIdentifierSum += i
 		}
 
-		return invalidIdentifierSum
 	}
+
+	return invalidIdentifierSum
 }

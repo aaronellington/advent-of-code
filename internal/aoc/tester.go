@@ -5,28 +5,30 @@ import (
 )
 
 type TestSuite struct {
-	SolutionPart1 Solution
-	SolutionPart2 Solution
-	Part1Example  int
-	Part1         int
-	Part2Example  int
-	Part2         int
+	Part1 Part
+	Part2 Part
+}
+
+type Part struct {
+	Solution Solution
+	Answer   int
+	Example  int
 }
 
 func (testingSuite TestSuite) TestPart1(t *testing.T) {
-	Test(t, testingSuite.SolutionPart1, "data/values.txt", testingSuite.Part1)
+	Test(t, testingSuite.Part1.Solution, "data/values.txt", testingSuite.Part1.Answer)
 }
 
 func (testingSuite TestSuite) TestPart1Example(t *testing.T) {
-	Test(t, testingSuite.SolutionPart1, "data/example.txt", testingSuite.Part1Example)
+	Test(t, testingSuite.Part1.Solution, "data/example.txt", testingSuite.Part1.Example)
 }
 
 func (testingSuite TestSuite) TestPart2(t *testing.T) {
-	Test(t, testingSuite.SolutionPart2, "data/values.txt", testingSuite.Part2)
+	Test(t, testingSuite.Part2.Solution, "data/values.txt", testingSuite.Part2.Answer)
 }
 
 func (testingSuite TestSuite) TestPart2Example(t *testing.T) {
-	Test(t, testingSuite.SolutionPart2, "data/example.txt", testingSuite.Part2Example)
+	Test(t, testingSuite.Part2.Solution, "data/example.txt", testingSuite.Part2.Example)
 }
 
 func Test(t *testing.T, solution Solution, filePath string, expected int) {
@@ -48,7 +50,7 @@ type LineTest struct {
 }
 
 func (lineTest LineTest) Test(t *testing.T) {
-	actual := lineTest.Solution.SolveLine()(0, []string{lineTest.Line})
+	actual := lineTest.Solution([]string{lineTest.Line})
 	if actual != lineTest.Expected {
 		t.Fatalf(
 			"Got %v, expected %v",

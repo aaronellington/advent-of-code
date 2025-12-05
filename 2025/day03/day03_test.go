@@ -9,12 +9,16 @@ import (
 
 func testSuite() aoc.TestSuite {
 	return aoc.TestSuite{
-		SolutionPart1: day03.Part1,
-		SolutionPart2: day03.Part2,
-		Part1Example:  357,
-		Part1:         17193,
-		Part2Example:  3121910778619,
-		Part2:         171297349921310,
+		Part1: aoc.Part{
+			Solution: day03.Part1.Solve,
+			Example:  357,
+			Answer:   17193,
+		},
+		Part2: aoc.Part{
+			Solution: day03.Part2.Solve,
+			Example:  3121910778619,
+			Answer:   171297349921310,
+		},
 	}
 }
 
@@ -37,7 +41,7 @@ func Test_Part2(t *testing.T) {
 func Test_Line_01(t *testing.T) {
 	aoc.LineTest{
 		Line:     "57489376",
-		Solution: day03.Solution{TargetBatteryCount: 4},
+		Solution: day03.Solution{TargetBatteryCount: 4}.Solve,
 		Expected: 9376,
 	}.Test(t)
 }
