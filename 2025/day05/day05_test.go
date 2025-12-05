@@ -14,6 +14,11 @@ func testSuite() aoc.TestSuite {
 			Example:  3,
 			Answer:   773,
 		},
+		Part2: aoc.Part{
+			Solution: day05.Part2,
+			Example:  14,
+			Answer:   332067203034711,
+		},
 	}
 }
 
@@ -23,4 +28,12 @@ func Test_Part1_Example(t *testing.T) {
 
 func Test_Part1(t *testing.T) {
 	testSuite().TestPart1(t)
+}
+
+func Test_Part2_Example(t *testing.T) {
+	testSuite().TestPart2Example(t)
+}
+
+func Test_Part2(t *testing.T) {
+	testSuite().TestPart2(t)
 }
