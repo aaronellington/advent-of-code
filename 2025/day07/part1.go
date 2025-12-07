@@ -4,19 +4,6 @@ import (
 	"strings"
 )
 
-type Kind int
-
-const (
-	Blank    Kind = 0
-	Laser    Kind = 1
-	Splitter Kind = 2
-)
-
-type Plot struct {
-	X int
-	Y int
-}
-
 func Part1(lines []string) int {
 	previousRowLasers := map[int]bool{}
 	splits := 0
