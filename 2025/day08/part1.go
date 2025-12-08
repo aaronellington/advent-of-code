@@ -136,9 +136,6 @@ func toVectors(lines []string) map[VectorID]Vector3 {
 	for i, line := range lines {
 		v := Vector3{}
 		parts := strings.Split(line, ",")
-		if len(parts) != 3 {
-			continue
-		}
 
 		for i, numberString := range parts {
 			number, err := strconv.ParseFloat(numberString, 64)

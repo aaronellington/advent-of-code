@@ -24,3 +24,21 @@ func Test_Part1(t *testing.T) {
 		66640,
 	)
 }
+
+func Test_Part2_Example(t *testing.T) {
+	aoc.Test(
+		t,
+		day08.Part2{MaxConnections: 10}.Solve,
+		"data/example.txt",
+		25272,
+	)
+}
+
+func Test_Part2(t *testing.T) {
+	aoc.Test(
+		t,
+		day08.Part2{MaxConnections: 1000}.Solve,
+		"data/values.txt",
+		78894156,
+	)
+}
