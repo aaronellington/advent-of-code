@@ -2,11 +2,7 @@ package day08
 
 import "sort"
 
-type Part2 struct {
-	MaxConnections int
-}
-
-func (part2 Part2) Solve(lines []string) int {
+func Part2(lines []string) int {
 	vectors := toVectors(lines)
 	assignments := map[VectorID]CircuitID{}
 	circuits := map[CircuitID][]VectorID{}
