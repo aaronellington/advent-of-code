@@ -24,3 +24,12 @@ func Test_Part1(t *testing.T) {
 		4771532800,
 	)
 }
+
+func Test_Part2_Example(t *testing.T) {
+	aoc.Test(
+		t,
+		day09.Part2,
+		"data/example.txt",
+		24,
+	)
+}
