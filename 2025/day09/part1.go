@@ -79,6 +79,7 @@ func NewState(lines []string) State {
 		Vectors: ParseVectors(lines),
 	}
 
+	// Plot points, and track height and width
 	for _, v := range state.Vectors {
 		if v.X > state.Width {
 			state.Width = v.X + 1
@@ -91,12 +92,29 @@ func NewState(lines []string) State {
 		state.Values[v] = Red
 	}
 
+	// Draw lines
+	for i, v := range state.Vectors {
+		previousIndex := i - 1
+
+		if previousIndex < 0 {
+			previousIndex = len(state.Vectors) - 1
+		}
+		previousV := state.Vectors[previousIndex]
+
+		for _, vector := range drawLine(previousV, v) {
+			if vector == previousV || vector == v {
+				continue
+			}
+			state.Values[vector] = Green
+		}
+	}
+
 	return state
 }
 
 func (state State) Print(mod func(state map[Vector]Value) map[Vector]Value) {
 	// Don't print large datasets
-	if len(state.Values) > 100 {
+	if len(state.Vectors) > 100 {
 		return
 	}
 
