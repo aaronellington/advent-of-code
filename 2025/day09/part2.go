@@ -1,12 +1,15 @@
 package day09
 
 import (
+	"log"
 	"sort"
 )
 
+var expensiveCalculations = 0
+
 func Part2(lines []string) int {
 	state := NewState(lines)
-	state.Print(nil)
+	state.Print()
 
 	options := []Option{}
 	for _, v1 := range state.Vectors {
@@ -25,20 +28,18 @@ func Part2(lines []string) int {
 		return options[i].Area > options[j].Area
 	})
 
+	log.Println("starting")
 	largestArea := 0
-	for _, x := range options {
-		v1 := x.Start
-		v2 := x.End
+	for _, option := range options {
+		v1 := option.Start
+		v2 := option.End
 
 		// Calculated other two points to make rectangle
 		v3 := Vector{X: v1.X, Y: v2.Y}
 		v4 := Vector{X: v2.X, Y: v1.Y}
 
 		// Early skip if extrapolated points not in polygon
-		if !state.IsVectorInPolygon(v3) {
-			continue
-		}
-		if !state.IsVectorInPolygon(v4) {
+		if !state.IsVectorInPolygon(v4) || !state.IsVectorInPolygon(v3) {
 			continue
 		}
 
@@ -49,14 +50,14 @@ func Part2(lines []string) int {
 			continue
 		}
 
-		state.Print(func(state map[Vector]Value) map[Vector]Value {
-			state[v1] = "A"
-			state[v2] = "A"
-			state[v3] = "B"
-			state[v4] = "B"
-			return state
-		})
-		largestArea = x.Area
+		state.Values[v1] = "1"
+		state.Values[v2] = "2"
+		state.Values[v3] = "3"
+		state.Values[v4] = "4"
+		state.Print()
+
+		largestArea = option.Area
+		log.Printf("Found answer after %d expensive calculations", expensiveCalculations)
 		break
 	}
 
@@ -72,6 +73,7 @@ func (state State) IsVectorInPolygon(vector Vector) bool {
 
 	// Calculate
 	result := state.pointInPolygon(vector)
+	expensiveCalculations++
 
 	// Save result to cache
 	if result {

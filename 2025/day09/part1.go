@@ -12,7 +12,7 @@ import (
 func Part1(lines []string) int {
 	state := NewState(lines)
 
-	state.Print(nil)
+	state.Print()
 
 	largestArea := 0
 
@@ -112,20 +112,15 @@ func NewState(lines []string) State {
 	return state
 }
 
-func (state State) Print(mod func(state map[Vector]Value) map[Vector]Value) {
+func (state State) Print() {
 	// Don't print large datasets
 	if len(state.Vectors) > 100 {
 		return
 	}
 
-	tmp := aoc.CopyMap(state.Values)
-	if mod != nil {
-		tmp = mod(tmp)
-	}
-
 	for y := 0; y <= state.Height; y++ {
 		for x := 0; x <= state.Width; x++ {
-			v := tmp[Vector{X: x, Y: y}]
+			v := state.Values[Vector{X: x, Y: y}]
 			if v == "" {
 				v = "."
 			}

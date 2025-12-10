@@ -48,7 +48,7 @@ func Test_Part2_Case_C(t *testing.T) {
 		t,
 		func(lines []string) int {
 			state := day09.NewState(lines)
-			state.Print(nil)
+			state.Print()
 
 			for y := 0; y <= state.Height; y++ {
 				for x := 0; x <= state.Width; x++ {
@@ -58,7 +58,7 @@ func Test_Part2_Case_C(t *testing.T) {
 					})
 				}
 			}
-			state.Print(nil)
+			state.Print()
 			return 0
 		},
 		"data/case_c.txt",
