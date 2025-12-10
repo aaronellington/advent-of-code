@@ -1,66 +1,63 @@
 package day09
 
 import (
-	"log"
-	"time"
+	"sort"
 )
 
 func Part2(lines []string) int {
 	state := NewState(lines)
-	// Print starting state
 	state.Print(nil)
 
-	largestArea := 0
-	totalOptions := len(state.Vectors) * len(state.Vectors)
-	_ = totalOptions
-
-	timer := &Timer{
-		Current:   0,
-		Total:     len(state.Vectors) * len(state.Vectors),
-		StartTime: time.Now(),
-	}
-	_ = timer
+	options := []Option{}
 	for _, v1 := range state.Vectors {
 		for _, v2 := range state.Vectors {
-			// timer.Tick()
-
-			// Skip checking self
 			if v1 == v2 {
 				continue
 			}
-
-			// Calculated other two points to make rectangle
-			v3 := Vector{X: v1.X, Y: v2.Y}
-			v4 := Vector{X: v2.X, Y: v1.Y}
-
-			// Early skip if extrapolated points not in polygon
-			if !state.IsVectorInPolygon(v3) {
-				continue
-			}
-			if !state.IsVectorInPolygon(v4) {
-				continue
-			}
-
-			polygon := []Vector{
-				v1, v3, v2, v4,
-			}
-
-			if !state.isPolygonInPolygon(polygon) {
-				continue
-			}
-
-			area := Area(v1, v2)
-			if area > largestArea {
-				state.Print(func(state map[Vector]Value) map[Vector]Value {
-					state[v1] = "A"
-					state[v2] = "A"
-					state[v3] = "B"
-					state[v4] = "B"
-					return state
-				})
-				largestArea = area
-			}
+			options = append(options, Option{
+				Start: v1,
+				End:   v2,
+				Area:  Area(v1, v2),
+			})
 		}
+	}
+	sort.Slice(options, func(i, j int) bool {
+		return options[i].Area > options[j].Area
+	})
+
+	largestArea := 0
+	for _, x := range options {
+		v1 := x.Start
+		v2 := x.End
+
+		// Calculated other two points to make rectangle
+		v3 := Vector{X: v1.X, Y: v2.Y}
+		v4 := Vector{X: v2.X, Y: v1.Y}
+
+		// Early skip if extrapolated points not in polygon
+		if !state.IsVectorInPolygon(v3) {
+			continue
+		}
+		if !state.IsVectorInPolygon(v4) {
+			continue
+		}
+
+		// Skip because not valid
+		if !state.isPolygonInPolygon([]Vector{
+			v1, v3, v2, v4,
+		}) {
+			continue
+		}
+
+		state.Print(func(state map[Vector]Value) map[Vector]Value {
+			state[v1] = "A"
+			state[v2] = "A"
+			state[v3] = "B"
+			state[v4] = "B"
+			return state
+		})
+		largestArea = x.Area
+		break
 	}
 
 	return largestArea
@@ -86,7 +83,7 @@ func (state State) IsVectorInPolygon(vector Vector) bool {
 	return result
 }
 
-func (state State) pointInPolygon(pt Vector) bool {
+func (state State) pointInPolygon(vector Vector) bool {
 	inside := false
 	n := len(state.Vectors)
 
@@ -94,8 +91,8 @@ func (state State) pointInPolygon(pt Vector) bool {
 		xi, yi := state.Vectors[i].X, state.Vectors[i].Y
 		xj, yj := state.Vectors[j].X, state.Vectors[j].Y
 
-		intersect := ((yi > pt.Y) != (yj > pt.Y)) &&
-			(pt.X < (xj-xi)*(pt.Y-yi)/(yj-yi)+xi)
+		intersect := ((yi > vector.Y) != (yj > vector.Y)) &&
+			(vector.X < (xj-xi)*(vector.Y-yi)/(yj-yi)+xi)
 		if intersect {
 			inside = !inside
 		}
@@ -103,26 +100,18 @@ func (state State) pointInPolygon(pt Vector) bool {
 	return inside
 }
 
-func (state State) isLineInPolygon(start Vector, end Vector) bool {
-	for _, vector := range drawLine(start, end) {
-		if !state.IsVectorInPolygon(vector) {
-			return false
-		}
-	}
-
-	return true
-}
-
 func (state State) isPolygonInPolygon(polygon []Vector) bool {
-	for i, vector1 := range polygon {
+	for i, start := range polygon {
 		vector2Index := i + 1
 		if vector2Index > len(polygon)-1 {
 			vector2Index = 0
 		}
 
-		vector2 := polygon[vector2Index]
-		if !state.isLineInPolygon(vector1, vector2) {
-			return false
+		end := polygon[vector2Index]
+		for _, vector := range drawLine(start, end) {
+			if !state.IsVectorInPolygon(vector) {
+				return false
+			}
 		}
 	}
 
@@ -162,21 +151,8 @@ func drawLine(start Vector, end Vector) []Vector {
 	return vectors
 }
 
-type Timer struct {
-	Current   int
-	Total     int
-	StartTime time.Time
-}
-
-func (t *Timer) Tick() {
-	t.Current++
-	elapsedTime := time.Since(t.StartTime)
-	perLoopAvg := elapsedTime / time.Duration(t.Current)
-	log.Printf(
-		"%d/%d time remaining: %s - per second: %d",
-		t.Current,
-		t.Total,
-		perLoopAvg*time.Duration(t.Total-t.Current),
-		time.Second/perLoopAvg,
-	)
+type Option struct {
+	Start Vector
+	End   Vector
+	Area  int
 }
